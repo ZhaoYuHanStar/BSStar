@@ -19,10 +19,12 @@
     </properties>
 
     <dependencies>
+        <!--Spring Boot-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        <!--Thymeleaf-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
@@ -38,6 +40,19 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!--OkHttp-->
+        <dependency>
+            <groupId>com.squareup.okhttp3</groupId>
+            <artifactId>okhttp</artifactId>
+            <version>4.9.0</version>
+        </dependency>
+        <!--FastJson-->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.74</version>
+        </dependency>
+
     </dependencies>
 
     <build>
