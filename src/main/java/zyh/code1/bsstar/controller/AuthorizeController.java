@@ -9,6 +9,8 @@ import zyh.code1.bsstar.dto.AccessTokenDTO;
 import zyh.code1.bsstar.dto.GithubUser;
 import zyh.code1.bsstar.provider.GithubProvider;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @ClassName AuthorizeController
  * @Description
@@ -31,7 +33,8 @@ public class AuthorizeController {
 
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,
-                           @RequestParam(name = "state") String state) {
+                           @RequestParam(name = "state") String state,
+                           HttpServletRequest request) {
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
         accessTokenDTO.setCode(code);
         accessTokenDTO.setState(state);
@@ -41,9 +44,13 @@ public class AuthorizeController {
 
         String token = githubProvider.getAccessToken(accessTokenDTO);
         GithubUser githubUser = githubProvider.getUser(token);
-        System.out.println(githubUser.getId());
-        System.out.println(githubUser.getId());
-
-        return "index";
+        if(githubUser != null) {
+            // 登录成功 写入 cookie 和 session
+            request.getSession().setAttribute("user", githubUser);
+            return "redirect:/";
+        } else {
+            //登录失败
+            return "redirect:/";
+        }
     }
 }
