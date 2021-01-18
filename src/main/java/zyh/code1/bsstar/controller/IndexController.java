@@ -1,9 +1,13 @@
 package zyh.code1.bsstar.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import zyh.code1.bsstar.mapper.UserMapper;
+import zyh.code1.bsstar.model.User;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @ClassName HelloController
@@ -13,8 +17,21 @@ import org.springframework.web.bind.annotation.RequestParam;
  */
 @Controller
 public class IndexController {
+    @Autowired
+    private UserMapper userMapper;
+
     @GetMapping("/")
-    public String index() {
+    public String index(HttpServletRequest request) {
+        for (Cookie cookie : request.getCookies()) {
+            if ("token".equals(cookie.getName())) {
+                String token = cookie.getValue();
+                User user = userMapper.findUserByToken(token);
+                if(user != null) {
+                    request.getSession().setAttribute("user", user);
+                }
+                break;
+            }
+        }
         return "index";
     }
 }
